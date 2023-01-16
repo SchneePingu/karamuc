@@ -11,4 +11,4 @@
  3. Open the *karamuc.apk* file from within the file explorer of your Android device.
  
     At this point, your device should start installing the app. Now, please wait for your device to finish the installation.
- 4. (Optional) When your device has finished the installation, disable the "*Install unknown apps*" option again.
+ 4. (Optional) When your device has finished the installation, disable the "*Install unknown apps*" option again and delete the *karamuc.apk* file.

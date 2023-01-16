@@ -6,7 +6,7 @@
 ### Installation
  1. Enable the "*Install unknown apps*" option on your Android device, as this app is not verified by the Play Store.
     
-    For Android versions 8 and above, the option is located under "Settings > Apps > Special Access > Install unknown apps".
+    For Android versions 8 and above, the option is located under "Settings > Apps > Special Access > Install unknown apps > Select your file explorer > Trust this source".
  2. Download the latest *karamuc.apk* from the [releases](https://github.com/SchneePingu/karamuc/releases) page to your Android device.
  3. Open the *karamuc.apk* file from within the file explorer of your Android device.
  

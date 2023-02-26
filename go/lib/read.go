@@ -87,7 +87,7 @@ func readBookingSlots(roomSelection *goquery.Selection) []BookingSlot {
 				return
 			}
 
-			if !bookingSlot.isAvailable {
+			if bookingSlot.isNotAvailable {
 				return
 			}
 
@@ -103,9 +103,9 @@ func readBookingSlot(bookingSlotSelection *goquery.Selection) (BookingSlot,
 	error) {
 	var bookingSlot BookingSlot
 
-	bookingSlot.isAvailable = isBookingSlotNotBookable(bookingSlotSelection)
+	bookingSlot.isNotAvailable = isBookingSlotNotBookable(bookingSlotSelection)
 
-	if !bookingSlot.isAvailable {
+	if bookingSlot.isNotAvailable {
 		return bookingSlot, nil
 	}
 

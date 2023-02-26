@@ -17,7 +17,7 @@ type BookingSlot struct {
 	until       Time
 	price       int
 	roomName    string
-	isAvailable bool
+	isNotAvailable bool
 }
 
 type Time struct {

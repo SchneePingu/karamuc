@@ -47,7 +47,7 @@ func readRoomSize(roomSelection *goquery.Selection) (RoomSize, error) {
 	// <div class="product_person">  2 Personen  </div>
 	roomSizeDescription := roomSelection.Find(".product_person").First().Text()
 
-	roomSizePattern := regexp.MustCompile(`\w+`)
+	roomSizePattern := regexp.MustCompile(`\d+`)
 	roomSizeAsString := string(roomSizePattern.Find(
 		[]byte(roomSizeDescription)))
 

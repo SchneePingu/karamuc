@@ -1,215 +1,214 @@
 package lib
 
 import (
-    "errors"
-    "fmt"
-    "io"
-    "regexp"
-    "strconv"
-    "strings"
+	"errors"
+	"fmt"
+	"io"
+	"log"
+	"regexp"
+	"strconv"
+	"strings"
 
-    "github.com/PuerkitoBio/goquery"
+	"github.com/PuerkitoBio/goquery"
 )
 
 func readRoomBookings(reader io.ReadCloser) RoomBookings {
-    defer reader.Close()
+	defer reader.Close()
 
-    readerContent, _ := goquery.NewDocumentFromReader(reader)
+	readerContent, _ := goquery.NewDocumentFromReader(reader)
 
-    roomBookings := make(RoomBookings)
+	roomBookings := make(RoomBookings)
 
-    // The booking data for a room is given in the following HTML format:
-    // <div class="single_product"> BOOKING DATA </div>
-    readerContent.Find(".single_product").Each(
-        func(_ int, roomSelection *goquery.Selection) {
-            roomSize, err := readRoomSize(roomSelection)
-            if (err != nil) {
-                return
-            }
+	// The booking data for a room is given in the following HTML format:
+	// <div class="single_product"> BOOKING DATA </div>
+	readerContent.Find(".single_product").Each(
+		func(_ int, roomSelection *goquery.Selection) {
+			roomSize, err := readRoomSize(roomSelection)
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
 
+			bookingSlots := readBookingSlots(roomSelection)
+			if len(bookingSlots) == 0 {
+				return
+			}
 
-            bookingSlots := readBookingSlots(roomSelection)
-            if (len(bookingSlots) == 0) {
-                return
-            }
+			existingBookingSlots := roomBookings[roomSize]
+			roomBookings[roomSize] = append(existingBookingSlots,
+				bookingSlots[:]...)
+		})
 
-            existingBookingSlots := roomBookings[roomSize]
-            roomBookings[roomSize] = append(existingBookingSlots,
-                bookingSlots[:]...)
-       })
-
-    return roomBookings
+	return roomBookings
 }
 
 func readRoomSize(roomSelection *goquery.Selection) (RoomSize, error) {
-    // The room size (number of persons) is given in the following HTML format:
-    // <div class="product_person">  2 Personen  </div>
-    roomSizeDescription := roomSelection.Find(".product_person").First().Text()
+	// The room size (number of persons) is given in the following HTML format:
+	// <div class="product_person">  2 Personen  </div>
+	roomSizeDescription := roomSelection.Find(".product_person").First().Text()
 
-    roomSizePattern := regexp.MustCompile(`\w+`)
-    roomSizeAsString := string(roomSizePattern.Find(
-         []byte(roomSizeDescription)))
+	roomSizePattern := regexp.MustCompile(`\w+`)
+	roomSizeAsString := string(roomSizePattern.Find(
+		[]byte(roomSizeDescription)))
 
-    roomSize, err := strconv.Atoi(roomSizeAsString)
-    if (err != nil) {
-        return roomSize, errors.New(
-            fmt.Sprintf("Cannot read room size from '%s' (%s).",
-                roomSizeAsString, roomSizeDescription))
-    }
+	roomSize, err := strconv.Atoi(roomSizeAsString)
+	if err != nil {
+		return roomSize, errors.New(
+			fmt.Sprintf("Cannot read room size from '%s' (%s).",
+				roomSizeAsString, roomSizeDescription))
+	}
 
-    return roomSize, nil
+	return roomSize, nil
 }
 
 func readRoomName(roomSelection *goquery.Selection) string {
-    // The room name is given in the following HTML format:
-    // <div class="product_name">  Fugu  </div>
-    roomNameDescription := roomSelection.Find(".product_name").First().Text()
+	// The room name is given in the following HTML format:
+	// <div class="product_name">  Fugu  </div>
+	roomNameDescription := roomSelection.Find(".product_name").First().Text()
 
-    roomName := strings.TrimSpace(roomNameDescription)
+	roomName := strings.TrimSpace(roomNameDescription)
 
-    return roomName
+	return roomName
 }
-
 
 func readBookingSlots(roomSelection *goquery.Selection) []BookingSlot {
-    bookingSlots := make([]BookingSlot, 0)
+	bookingSlots := make([]BookingSlot, 0)
 
-    roomName := readRoomName(roomSelection)
+	roomName := readRoomName(roomSelection)
 
-    // A room's booking slots are given in the following HTML format:
-    // <div class="product_meta">
-    // <div class="row_time_slot"> TIME SLOTS </div> </div>
-    roomSelection.Find(".product_meta").First().Find(".row_time_slot").Each(
-        func(_ int, bookingSlotSelection *goquery.Selection) {
-            bookingSlot, err := readBookingSlot(bookingSlotSelection)
-            if (err != nil) {
-                return
-            }
+	// A room's booking slots are given in the following HTML format:
+	// <div class="product_meta">
+	// <div class="row_time_slot"> TIME SLOTS </div> </div>
+	roomSelection.Find(".product_meta").First().Find(".row_time_slot").Each(
+		func(_ int, bookingSlotSelection *goquery.Selection) {
+			bookingSlot, err := readBookingSlot(bookingSlotSelection)
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
 
-            bookingSlot.roomName = roomName
+			bookingSlot.roomName = roomName
 
-            bookingSlots = append(bookingSlots, bookingSlot)
-        })
+			bookingSlots = append(bookingSlots, bookingSlot)
+		})
 
-    return bookingSlots
+	return bookingSlots
 }
 
-
 func readBookingSlot(bookingSlotSelection *goquery.Selection) (BookingSlot,
-    error) {
-    var bookingSlot BookingSlot
+	error) {
+	var bookingSlot BookingSlot
 
-    if (isBookingSlotNotBookable(bookingSlotSelection)) {
-        return bookingSlot, errors.New("The booking slot is not bookable.")
-    }
+	if isBookingSlotNotBookable(bookingSlotSelection) {
+		return bookingSlot, errors.New("The booking slot is not bookable.")
+	}
 
+	from, until, err := readTimesForBookingSlot(bookingSlotSelection)
+	if err != nil {
+		return bookingSlot, err
+	}
 
-    from, until, err := readTimesForBookingSlot(bookingSlotSelection)
-    if (err != nil) {
-        return bookingSlot, err
-    }
+	bookingSlot.from = from
+	bookingSlot.until = until
 
-    bookingSlot.from = from
-    bookingSlot.until = until
+	price, err := readPriceForBookingSlot(bookingSlotSelection)
+	if err != nil {
+		return bookingSlot, err
+	}
 
-    price, err := readPriceForBookingSlot(bookingSlotSelection)
-    if (err != nil ) {
-        return bookingSlot, err
-    }
+	bookingSlot.price = price
 
-    bookingSlot.price = price
-
-    return bookingSlot, nil
+	return bookingSlot, nil
 }
 
 func isBookingSlotNotBookable(bookingSlotSelection *goquery.Selection) bool {
-    htmlClasses, _ := bookingSlotSelection.Attr("class")
-    // The website uses a HTML class with the name "not_avaliable"
-    // when a time slot is not available for booking.
-    isNotAvailable := strings.Contains(htmlClasses, "not_avaliable")
-    // The website uses a class with the name "display_none"
-    // when a time slot is not visible for booking.
-    isNotVisible := strings.Contains(htmlClasses, "display_none")
+	htmlClasses, _ := bookingSlotSelection.Attr("class")
+	// The website uses a HTML class with the name "not_avaliable"
+	// when a time slot is not available for booking.
+	isNotAvailable := strings.Contains(htmlClasses, "not_avaliable")
+	// The website uses a class with the name "display_none"
+	// when a time slot is not visible for booking.
+	isNotVisible := strings.Contains(htmlClasses, "display_none")
 
-    return isNotAvailable || isNotVisible
+	return isNotAvailable || isNotVisible
 }
 
 func readTimesForBookingSlot(bookingSlotSelection *goquery.Selection) (Time,
-    Time, error) {
-    var from Time
-    var until Time
+	Time, error) {
+	var from Time
+	var until Time
 
-    // The time span of a booking slot is given in the following HTML format:
-    // <div class="product_time_slot">  17:00 - 19:00  </div>
-    timeSpanDescription := bookingSlotSelection.Find(".product_time_slot").
-        First().Text()
+	// The time span of a booking slot is given in the following HTML format:
+	// <div class="product_time_slot">  17:00 - 19:00  </div>
+	timeSpanDescription := bookingSlotSelection.Find(".product_time_slot").
+		First().Text()
 
-    timePattern := regexp.MustCompile(`\w+:\w+`)
-    timesAsString := timePattern.FindAll([]byte(timeSpanDescription), -1)
-    if (len(timesAsString) != 2) {
-        return from, until, errors.New(
-            fmt.Sprintf("Cannot read time slot from '%s'",
-                timeSpanDescription))
-    }
+	timePattern := regexp.MustCompile(`\w+:\w+`)
+	timesAsString := timePattern.FindAll([]byte(timeSpanDescription), -1)
+	if len(timesAsString) != 2 {
+		return from, until, errors.New(
+			fmt.Sprintf("Cannot read time slot from '%s'",
+				timeSpanDescription))
+	}
 
-    from, err := toTime(string(timesAsString[0]))
-    if (err != nil) {
-        return from, until, err
-    }
+	from, err := toTime(string(timesAsString[0]))
+	if err != nil {
+		return from, until, err
+	}
 
-    until, err = toTime(string(timesAsString[1]))
-    if (err != nil) {
-        return from, until, err
-    }
+	until, err = toTime(string(timesAsString[1]))
+	if err != nil {
+		return from, until, err
+	}
 
-    return from, until, nil
+	return from, until, nil
 }
 
 func toTime(timeAsString string) (Time, error) {
-    var time Time
+	var time Time
 
-    numbersInTime := strings.Split(timeAsString, ":")
-    if (len(numbersInTime) != 2) {
-        return time, errors.New(fmt.Sprintf("Cannot read time from '%s'.",
-            timeAsString))
-    }
+	numbersInTime := strings.Split(timeAsString, ":")
+	if len(numbersInTime) != 2 {
+		return time, errors.New(fmt.Sprintf("Cannot read time from '%s'.",
+			timeAsString))
+	}
 
-    hour, err := strconv.Atoi(numbersInTime[0])
-    if (err != nil) {
-        return time, errors.New(
-            fmt.Sprintf("Cannot read hour from '%s' (%s).", numbersInTime[0],
-                timeAsString))
-    }
+	hour, err := strconv.Atoi(numbersInTime[0])
+	if err != nil {
+		return time, errors.New(
+			fmt.Sprintf("Cannot read hour from '%s' (%s).", numbersInTime[0],
+				timeAsString))
+	}
 
-    minute, err := strconv.Atoi(numbersInTime[1])
-    if (err != nil) {
-        return time, errors.New(
-            fmt.Sprintf("Cannot read minute from '%s' (%s).", numbersInTime[1],
-                timeAsString))
-    }
+	minute, err := strconv.Atoi(numbersInTime[1])
+	if err != nil {
+		return time, errors.New(
+			fmt.Sprintf("Cannot read minute from '%s' (%s).", numbersInTime[1],
+				timeAsString))
+	}
 
-    time.hour = hour
-    time.minute = minute
+	time.hour = hour
+	time.minute = minute
 
-    return time, nil
+	return time, nil
 }
 
 func readPriceForBookingSlot(bookingSlotSelection *goquery.Selection) (int,
-    error) {
-    // The price of a booking slot is given in the following HTML format:
-    // <div class="product_price_slot">  EuroSymbol 100  </div>
-    priceDescription := bookingSlotSelection.Find(".product_price_slot").
-        First().Text()
+	error) {
+	// The price of a booking slot is given in the following HTML format:
+	// <div class="product_price_slot">  EuroSymbol 100  </div>
+	priceDescription := bookingSlotSelection.Find(".product_price_slot").
+		First().Text()
 
-    pricePattern := regexp.MustCompile(`\w+`)
-    priceAsString := string(pricePattern.Find([]byte(priceDescription)))
+	pricePattern := regexp.MustCompile(`\w+`)
+	priceAsString := string(pricePattern.Find([]byte(priceDescription)))
 
-    price, err := strconv.Atoi(priceAsString)
-    if (err != nil) {
-        return price, errors.New(
-            fmt.Sprintf("Cannot read price from '%s' (%s).", priceAsString,
-                priceDescription))
-    }
+	price, err := strconv.Atoi(priceAsString)
+	if err != nil {
+		return price, errors.New(
+			fmt.Sprintf("Cannot read price from '%s' (%s).", priceAsString,
+				priceDescription))
+	}
 
-    return price, nil
+	return price, nil
 }

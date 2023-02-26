@@ -87,6 +87,10 @@ func readBookingSlots(roomSelection *goquery.Selection) []BookingSlot {
 				return
 			}
 
+			if !bookingSlot.isAvailable {
+				return
+			}
+
 			bookingSlot.roomName = roomName
 
 			bookingSlots = append(bookingSlots, bookingSlot)
@@ -99,8 +103,10 @@ func readBookingSlot(bookingSlotSelection *goquery.Selection) (BookingSlot,
 	error) {
 	var bookingSlot BookingSlot
 
-	if isBookingSlotNotBookable(bookingSlotSelection) {
-		return bookingSlot, errors.New("The booking slot is not bookable.")
+	bookingSlot.isAvailable = isBookingSlotNotBookable(bookingSlotSelection)
+
+	if !bookingSlot.isAvailable {
+		return bookingSlot, nil
 	}
 
 	from, until, err := readTimesForBookingSlot(bookingSlotSelection)

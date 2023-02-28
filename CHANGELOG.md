@@ -1,5 +1,8 @@
 # Changelog of karamuc
 
+## v2.0.0
+* Open booking website on tapping booking slot.
+
 ## v1.1.1
 * Fix: Show the bookable time-slots.
 

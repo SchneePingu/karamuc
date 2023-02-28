@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+final String _bookingUrl = 'https://yokochokaraoke.de/buchen/';
 
 void main() {
   runApp(const BookingApplication());
@@ -29,16 +32,22 @@ class BookingSlotsViewFactory {
     }
 
     return BookingSlotsView(
-        bookingSlots: bookingSlots, hasBookingSlots: roomBookings != null);
+        bookingSlots: bookingSlots,
+        hasBookingSlots: roomBookings != null,
+        date: date);
   }
 }
 
 class BookingSlotsView extends StatelessWidget {
   final List<BookingSlot> bookingSlots;
   final bool hasBookingSlots;
+  final String date;
 
   const BookingSlotsView(
-      {super.key, required this.bookingSlots, required this.hasBookingSlots});
+      {super.key,
+      required this.bookingSlots,
+      required this.hasBookingSlots,
+      required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -48,31 +57,34 @@ class BookingSlotsView extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 itemCount: bookingSlots.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 50,
-                    color: Colors.blue,
-                    child: Center(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                          SizedBox(
-                              width: 130,
-                              child: Text(
-                                  '${bookingSlots[index].from} - ${bookingSlots[index].until}',
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16))),
-                          SizedBox(
-                              width: 100,
-                              child: Text('${bookingSlots[index].price} Euro',
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16))),
-                          SizedBox(
-                              width: 110,
-                              child: Text(bookingSlots[index].roomName,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16))),
-                        ])),
-                  );
+                  return InkWell(
+                      child: Container(
+                        height: 50,
+                        color: Colors.blue,
+                        child: Center(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                              SizedBox(
+                                  width: 130,
+                                  child: Text(
+                                      '${bookingSlots[index].from} - ${bookingSlots[index].until}',
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 16))),
+                              SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                      '${bookingSlots[index].price} Euro',
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 16))),
+                              SizedBox(
+                                  width: 110,
+                                  child: Text(bookingSlots[index].roomName,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 16))),
+                            ])),
+                      ),
+                      onTap: _getBookingPageLauncher(this.date));
                 },
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(),
@@ -86,6 +98,15 @@ class BookingSlotsView extends StatelessWidget {
             style: TextStyle(fontSize: 20, color: Colors.blueGrey),
             textAlign: TextAlign.center,
           ));
+  }
+
+  Future<void> Function() _getBookingPageLauncher(String date) {
+    Future<void> launchBookingPage() async {
+      Uri url = Uri.parse('$_bookingUrl?product_filter_date=$date');
+      await launchUrl(url);
+    }
+
+    return launchBookingPage;
   }
 
   String showBookingSlot(BookingSlot bookingSlot) {

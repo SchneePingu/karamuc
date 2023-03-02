@@ -1,107 +1,108 @@
 package lib
 
 import (
-    "encoding/json"
-    "sort"
-    "sync"
-    "time"
+	"encoding/json"
+	"sort"
+	"sync"
+	"time"
 )
 
-
 func FetchBookingData(date string) string {
-    dailyBookings := make(DailyBookings)
+	bookingDataDto := FetchBookingDataDto(date)
 
-    var processDailyBookings sync.WaitGroup
+	return toJsonString(bookingDataDto)
+}
 
-    workingDayDates := getWorkingDayDates(date)
-    for _, workingDayDate := range workingDayDates {
-        processDailyBookings.Add(1)
+func FetchBookingDataDto(date string) BookingDataDto {
+	dailyBookings := make(DailyBookings)
 
-        go func(date string) {
-            defer processDailyBookings.Done()
+	var processDailyBookings sync.WaitGroup
 
-            response, err := requestBookingWebsite(date)
-            if (err != nil) {
-                return
-            }
+	workingDayDates := getWorkingDayDates(date)
+	for _, workingDayDate := range workingDayDates {
+		processDailyBookings.Add(1)
 
-            defer response.Body.Close()
-            roomBookings := readRoomBookings(response.Body)
+		go func(date string) {
+			defer processDailyBookings.Done()
 
-            sortRoomBookings(roomBookings)
+			response, err := requestBookingWebsite(date)
+			if err != nil {
+				return
+			}
 
-            dailyBookings[date] = roomBookings
-        }(workingDayDate)
-    }
+			defer response.Body.Close()
+			roomBookings := readRoomBookings(response.Body)
 
-    processDailyBookings.Wait()
+			sortRoomBookings(roomBookings)
 
-    roomSizes := getRoomSizes(dailyBookings)
-    bookingData := BookingData{workingDayDates, roomSizes, dailyBookings}
+			dailyBookings[date] = roomBookings
+		}(workingDayDate)
+	}
 
-    bookingDataDto := mapBookingData(bookingData)
+	processDailyBookings.Wait()
 
-    bookingsAsJsonString := toJsonString(bookingDataDto)
+	roomSizes := getRoomSizes(dailyBookings)
+	bookingData := BookingData{workingDayDates, roomSizes, dailyBookings}
 
-    return bookingsAsJsonString
+	return mapBookingData(bookingData)
 }
 
 func getWorkingDayDates(date string) []string {
-    var workingDayDates []string
+	var workingDayDates []string
 
-    dateTime, err := toDateTime(date)
-    if (err != nil) {
-        return workingDayDates
-    }
+	dateTime, err := toDateTime(date)
+	if err != nil {
+		return workingDayDates
+	}
 
-    weekdayIndex := int(dateTime.Weekday())
+	weekdayIndex := int(dateTime.Weekday())
 
-    workingDayIndices := []int{3, 4, 5, 6}
-    sort.Ints(workingDayIndices)
+	workingDayIndices := []int{3, 4, 5, 6}
+	sort.Ints(workingDayIndices)
 
-    for _, workingDayIndex := range workingDayIndices {
-        daysBetweenWorkingDayAndWeekday := workingDayIndex - weekdayIndex
+	for _, workingDayIndex := range workingDayIndices {
+		daysBetweenWorkingDayAndWeekday := workingDayIndex - weekdayIndex
 
-        workingDay := dateTime.AddDate(0, 0, daysBetweenWorkingDayAndWeekday)
-        workingDayDate := fromDateTime(workingDay)
+		workingDay := dateTime.AddDate(0, 0, daysBetweenWorkingDayAndWeekday)
+		workingDayDate := fromDateTime(workingDay)
 
-        workingDayDates = append(workingDayDates, workingDayDate)
-    }
+		workingDayDates = append(workingDayDates, workingDayDate)
+	}
 
-    return workingDayDates
+	return workingDayDates
 }
 
 func toDateTime(date string) (time.Time, error) {
-    return time.Parse("02.01.2006", date)
+	return time.Parse("02.01.2006", date)
 }
 
 func fromDateTime(date time.Time) string {
-    return date.Format("02.01.2006")
+	return date.Format("02.01.2006")
 }
 
 func getRoomSizes(dailyBookings DailyBookings) []int {
-    roomSizes := make([]int, 0)
+	roomSizes := make([]int, 0)
 
-    roomSizesSet := make(map[int]bool)
+	roomSizesSet := make(map[int]bool)
 
-    for _, roomBookings := range dailyBookings {
-        for roomSize, _ := range roomBookings {
-            roomSizesSet[roomSize] = true
-        }
-    }
+	for _, roomBookings := range dailyBookings {
+		for roomSize, _ := range roomBookings {
+			roomSizesSet[roomSize] = true
+		}
+	}
 
-    for roomSize, _ := range roomSizesSet {
-        roomSizes = append(roomSizes, roomSize)
-    }
+	for roomSize, _ := range roomSizesSet {
+		roomSizes = append(roomSizes, roomSize)
+	}
 
-    sort.Ints(roomSizes)
+	sort.Ints(roomSizes)
 
-    return roomSizes
+	return roomSizes
 }
 
 func toJsonString(bookingDataDto BookingDataDto) string {
-    byteArray, _ := json.Marshal(bookingDataDto)
-    jsonString := string(byteArray)
+	byteArray, _ := json.Marshal(bookingDataDto)
+	jsonString := string(byteArray)
 
-    return jsonString
+	return jsonString
 }

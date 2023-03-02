@@ -3,7 +3,7 @@
 # [Karamuc]
 [![Test](https://github.com/SchneePingu/karamuc/actions/workflows/go.yml/badge.svg)](https://github.com/SchneePingu/karamuc/actions/workflows/go.yml)
 
-*Karamuc* is an Android app for browsing vacant reservations of karaoke rooms at [Yokocho Karaoke Box & Bar](https://www.yokochokaraoke.de/) in Munich.
+*Karamuc* is an Android app for browsing vacant reservations of Karaoke rooms at [Yokocho Karaoke Box & Bar](https://www.yokochokaraoke.de/) in Munich.
 
 <p align="left"><img src="/assets/preview/reservations.png" alt="vacant rerservations" width="300"></p>
 

@@ -1,0 +1,26 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.16
+        cache: true
+        
+    - name: Install dependencies
+      run: go get github.com/SchneePingu/karamuc/lib
+
+    - name: Build
+      run: go build github.com/SchneePingu/karamuc/lib
+
+    - name: Test
+      run: go test github.com/SchneePingu/karamuc/tests

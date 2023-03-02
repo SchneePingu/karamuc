@@ -1,8 +1,10 @@
-name: Go
+name: Test
 
 on:
   push:
     branches: [ "main" ]
+  schedule:
+    - cron: '0 16 * * *'
 
 jobs:
   build:

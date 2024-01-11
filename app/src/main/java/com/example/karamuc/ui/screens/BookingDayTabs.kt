@@ -12,7 +12,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,6 +45,7 @@ fun BookingDayTabs(
     onTabIndexChange: (tabIndex: Int) -> Unit,
     bookingDays: List<BookingUiState>,
     numberOfPersons: Int?,
+    onError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(initialPage = tabIndex)
@@ -117,6 +121,29 @@ fun BookingDayTabs(
                                 textAlign = TextAlign.Center,
                                 modifier = modifier.fillMaxWidth()
                             )
+                            Spacer(modifier = modifier.size(20.dp))
+                            Button(
+                                onClick = onError,
+                                colors = ButtonDefaults.buttonColors(
+                                    MaterialTheme.colorScheme.primary,
+                                    MaterialTheme.colorScheme.onPrimary,
+                                    MaterialTheme.colorScheme.secondary,
+                                    MaterialTheme.colorScheme.onSecondary
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Refresh,
+                                    contentDescription = null,
+                                    modifier = modifier
+                                )
+                                Spacer(
+                                    modifier = modifier.size(5.dp)
+                                )
+                                Text(
+                                    text = (stringResource(R.string.retry_button)),
+                                    modifier = modifier
+                                )
+                            }
                         }
                     }
                 is BookingUiState.Success ->
@@ -148,10 +175,11 @@ fun BookingDayTabViewPreview() {
                 tabIndex = 0,
                 onTabIndexChange = {},
                 bookingDays = listOf(
-                    BookingUiState.Loading,
+                    BookingUiState.Error,
                     BookingUiState.Error,
                 ),
-                numberOfPersons = 2
+                numberOfPersons = 2,
+                onError = {}
             )
         }
     }

@@ -20,7 +20,7 @@ import com.example.karamuc.ui.theme.KaramucTheme
 @Composable
 fun KaramucApp() {
     val topAppBarViewModel: TopAppBarViewModel = viewModel()
-    val test: BookingViewModel = viewModel()
+    val bookingViewModel: BookingViewModel = viewModel()
     val modifier = Modifier
 
     Scaffold(
@@ -29,8 +29,8 @@ fun KaramucApp() {
                 date = topAppBarViewModel.date,
                 onDateChange = {
                     topAppBarViewModel.updateDate(it)
-                    test.updateTabIndex(it)
-                    test.updateState(it)
+                    bookingViewModel.updateTabIndex(it)
+                    bookingViewModel.updateState(it)
                 },
                 numberOfPersons = topAppBarViewModel.numberOfPersons,
                 onNumberOfPersonsChange = topAppBarViewModel:: updateNumberOfPersons,
@@ -47,10 +47,11 @@ fun KaramucApp() {
             if (topAppBarViewModel.date != null) {
                 BookingDayTabs(
                     days = BookingDaysService.getBookingWeek(topAppBarViewModel.date),
-                    tabIndex = test.tabIndex,
-                    onTabIndexChange = test::updateTabIndex,
-                    bookingDays = listOf(test.wednesday, test.thursday, test.friday, test.saturday, test.sunday),
+                    tabIndex = bookingViewModel.tabIndex,
+                    onTabIndexChange = bookingViewModel::updateTabIndex,
+                    bookingDays = listOf(bookingViewModel.wednesday, bookingViewModel.thursday, bookingViewModel.friday, bookingViewModel.saturday, bookingViewModel.sunday),
                     numberOfPersons = topAppBarViewModel.numberOfPersons,
+                    onError = { bookingViewModel.updateState(topAppBarViewModel.date) },
                     modifier = modifier
                 )
             }

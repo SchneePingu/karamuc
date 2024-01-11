@@ -37,8 +37,12 @@ class BookingViewModel : ViewModel() {
         tabIndex = newTabIndex
     }
 
-    fun updateState(bookingDate: LocalDate) {
+    fun updateState(bookingDate: LocalDate?) {
         val days = BookingDaysService.getBookingWeek(bookingDate)
+
+        if (days.isEmpty() || days.size != 5) {
+            return
+        }
 
         getBookingSlots(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(days[0])) {
             wednesday = it

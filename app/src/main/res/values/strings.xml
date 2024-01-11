@@ -4,4 +4,5 @@
     <string name="loading">Die verfügbaren Buchungen\nwerden abgerufen.</string>
     <string name="loading_easter_egg">(Abwarten und Spezi trinken.)</string>
     <string name="error">Die verfügbaren Buchungen konnten\nnicht abgerufen werden.</string>
+    <string name="retry_button">Erneut versuchen</string>
 </resources>

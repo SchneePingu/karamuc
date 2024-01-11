@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Karamuc</string>
     <string name="date_button">Datum wählen</string>
+    <string name="error">Die verfügbaren Buchungen konnten nicht abgerufen werden.</string>
 </resources>

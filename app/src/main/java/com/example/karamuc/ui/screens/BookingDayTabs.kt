@@ -2,18 +2,32 @@ package com.example.karamuc.ui.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.karamuc.R
 import com.example.karamuc.model.BookingUiState
 import com.example.karamuc.service.BookingDaysService
 import com.example.karamuc.ui.theme.KaramucTheme
@@ -56,7 +70,29 @@ fun BookingDayTabs(
         ) { pageIndex ->
             when(bookingDays[pageIndex]) {
                 is BookingUiState.Loading -> Text("Loading")
-                is BookingUiState.Error -> Text("Error")
+                is BookingUiState.Error ->
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = modifier.fillMaxHeight()
+                    ){
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = modifier
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Warning,
+                                contentDescription = null,
+                                modifier = modifier
+                            )
+                            Spacer(modifier = modifier.size(10.dp))
+                            Text(
+                                text = stringResource(R.string.error),
+                                textAlign = TextAlign.Center,
+                                modifier = modifier.fillMaxWidth(0.8f)
+                            )
+
+                        }
+                    }
                 is BookingUiState.Success ->
             BookingSlotsList(
                 bookingSlots = BookingDaysService.filterSize(
@@ -86,7 +122,7 @@ fun BookingDayTabViewPreview() {
                 tabIndex = 0,
                 onTabIndexChange = {},
                 bookingDays = listOf(
-                    BookingUiState.Loading,
+                    BookingUiState.Error,
                     BookingUiState.Error,
                 ),
                 numberOfPersons = 2

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="KaramucDatePicker">
+        <!-- Customize the background color -->
+        <item name="android:background">@color/black</item>
+
+        <!-- Customize the text color -->
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <!-- Customize other attributes as needed -->
+    </style>
+</resources>

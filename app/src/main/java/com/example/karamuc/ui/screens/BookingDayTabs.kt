@@ -13,6 +13,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -69,7 +70,33 @@ fun BookingDayTabs(
             modifier = modifier.padding(it)
         ) { pageIndex ->
             when(bookingDays[pageIndex]) {
-                is BookingUiState.Loading -> Text("Loading")
+                is BookingUiState.Loading ->
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = modifier.fillMaxHeight()
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = modifier
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = modifier.size(180.dp),
+                                strokeWidth = 5.dp,
+                            )
+                            Spacer(modifier = modifier.size(30.dp))
+                            Text(
+                                text = stringResource(R.string.loading),
+                                textAlign = TextAlign.Center,
+                                modifier = modifier.fillMaxWidth()
+                            )
+                            Spacer(modifier = modifier.size(10.dp))
+                            Text(
+                                text = stringResource(R.string.loading_easter_egg),
+                                textAlign = TextAlign.Center,
+                                modifier = modifier.fillMaxWidth()
+                            )
+                        }
+                    }
                 is BookingUiState.Error ->
                     Box(
                         contentAlignment = Alignment.Center,
@@ -88,9 +115,8 @@ fun BookingDayTabs(
                             Text(
                                 text = stringResource(R.string.error),
                                 textAlign = TextAlign.Center,
-                                modifier = modifier.fillMaxWidth(0.8f)
+                                modifier = modifier.fillMaxWidth()
                             )
-
                         }
                     }
                 is BookingUiState.Success ->
@@ -122,7 +148,7 @@ fun BookingDayTabViewPreview() {
                 tabIndex = 0,
                 onTabIndexChange = {},
                 bookingDays = listOf(
-                    BookingUiState.Error,
+                    BookingUiState.Loading,
                     BookingUiState.Error,
                 ),
                 numberOfPersons = 2

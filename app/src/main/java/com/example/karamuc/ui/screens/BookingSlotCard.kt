@@ -13,12 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.karamuc.R
 import com.example.karamuc.model.BookingSlot
 import com.example.karamuc.model.getPrice
 import com.example.karamuc.model.getRoomName
@@ -44,14 +41,12 @@ fun BookingSlotCard(
             Text(
                 text = getTimeSlot(bookingSlot),
                 textAlign = TextAlign.Center,
-                fontSize = integerResource(R.integer.booking_slot_font_size).sp,
                 modifier = modifier
                     .weight(1f)
                     .fillMaxWidth()
             )
             Text(
                 text = getPrice(bookingSlot),
-                fontSize = integerResource(R.integer.booking_slot_font_size).sp,
                 modifier = modifier
                     .weight(0.5f)
                     .fillMaxWidth()
@@ -59,7 +54,6 @@ fun BookingSlotCard(
             Text(
                 text = getRoomName(bookingSlot),
                 textAlign = TextAlign.Center,
-                fontSize = integerResource(R.integer.booking_slot_font_size).sp,
                 modifier = modifier
                     .weight(1f)
                     .fillMaxWidth()

@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 const val DEFAULT_NUMBER_OF_PERSONS: Int = 2
 
-class TopAppBarViewModel : ViewModel() {
+class AppTopBarViewModel : ViewModel() {
     var date: LocalDate? by mutableStateOf(LocalDate.now())
     var numberOfPersons: Int? by mutableStateOf(DEFAULT_NUMBER_OF_PERSONS)
 

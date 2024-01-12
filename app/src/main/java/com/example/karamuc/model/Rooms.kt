@@ -1,6 +1,6 @@
 package com.example.karamuc.model
 
-enum class Room(
+enum class Rooms(
     val id: String,
     val displayName: String,
     val persons: Int,
@@ -18,6 +18,12 @@ enum class Room(
     CATCAFE("1027","Katzen-Café", 10, 12),
 }
 
-fun getRoomById(id: String): Room? {
-    return Room.values().find { it.id == id }
+fun getRoomById(id: String): Rooms? {
+    return Rooms.values().find { it.id == id }
+}
+
+fun getRoomIds(): String {
+    return Rooms.values()
+        .map{ it.id }
+        .joinToString(",", transform = { it })
 }

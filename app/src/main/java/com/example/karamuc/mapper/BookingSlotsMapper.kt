@@ -4,7 +4,7 @@ import com.example.karamuc.model.BookingSlot
 import com.example.karamuc.model.BookingSlotDto
 import com.example.karamuc.model.getRoomById
 
-class BookingSlotMapper {
+class BookingSlotsMapper {
     companion object {
         fun map(source: Map<String, List<BookingSlotDto>>): List<BookingSlot> {
             return source.flatMap { (roomId, list) ->

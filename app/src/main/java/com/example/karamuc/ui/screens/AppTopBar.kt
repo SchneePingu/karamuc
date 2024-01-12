@@ -13,7 +13,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KaramucTopAppBar(
+fun AppTopBar(
     date: LocalDate?,
     onDateChange: (date: LocalDate) -> Unit,
     numberOfPersons: Int?,
@@ -48,8 +48,8 @@ fun KaramucTopAppBar(
 @Preview(name = "LightTheme", showBackground = true)
 @Preview(name = "DarkTheme", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun KaramucTopAppBarPreview() {
+fun AppTopBarPreview() {
     KaramucTheme {
-        KaramucTopAppBar(null, {}, null, {} )
+        AppTopBar(null, {}, null, {} )
     }
 }

@@ -17,9 +17,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.karamuc.model.BookingSlot
+import com.example.karamuc.model.getPrice
+import com.example.karamuc.model.getRoomName
+import com.example.karamuc.model.getTimeSlot
 import com.example.karamuc.ui.theme.KaramucTheme
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun BookingSlotCard(
@@ -53,37 +55,6 @@ fun BookingSlotCard(
         }
         Spacer(modifier = modifier.size(10.dp))
     }
-}
-
-private fun getTimeSlot(bookingSlot: BookingSlot): String {
-    val fromTime = formatTime(bookingSlot.fromTime)
-    val toTime = formatTime(bookingSlot.toTime)
-
-    return "$fromTime - $toTime"
-}
-
-private fun formatTime(time: LocalTime?): String {
-    if (time == null) {
-        return "k.A."
-    }
-
-    return DateTimeFormatter.ofPattern("HH:mm").format(time)
-}
-
-private fun getPrice(bookingSlot: BookingSlot): String {
-    if (bookingSlot.price == null) {
-        return "k.A."
-    }
-
-    return "${bookingSlot.price} Euro"
-}
-
-private fun getRoomName(bookingSlot: BookingSlot): String {
-    if (bookingSlot.roomName == null) {
-        return "k.A."
-    }
-
-    return bookingSlot.roomName
 }
 
 @Preview(name = "LightTheme", showBackground = true)

@@ -1,36 +1,9 @@
 package com.example.karamuc.service
 
 import com.example.karamuc.model.BookingSlot
-import java.time.LocalDate
-
-val BOOKING_WEEK_INDICES = listOf<Long>(3, 4, 5, 6, 7)
 
 class BookingDaysService {
     companion object {
-        fun getBookingWeek(bookingDay: LocalDate?): List<LocalDate> {
-            if (bookingDay == null) {
-                return listOf()
-            }
-
-            val bookingDayIndex = bookingDay.dayOfWeek.value
-
-            return BOOKING_WEEK_INDICES.map {
-                bookingDay.plusDays( it - bookingDayIndex)
-            }
-        }
-
-        fun getTabIndex(bookingDay: LocalDate?): Int {
-            if (bookingDay == null) {
-                return 0
-            }
-
-            if (bookingDay.dayOfWeek.value < 3) {
-                return 0
-            }
-
-            return bookingDay.dayOfWeek.value - 3
-
-        }
 
         fun filterSize(bookingSlots: List<BookingSlot>, numberOfPersons: Int?): List<BookingSlot> {
             if (numberOfPersons == null) {

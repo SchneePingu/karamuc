@@ -1,6 +1,6 @@
 package com.example.karamuc.network
 
-import com.example.karamuc.adapter.BookingSlotAdapterFactory
+import com.example.karamuc.adapter.BookingSlotsAdapterFactory
 import com.example.karamuc.model.BookingSlotDto
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
@@ -12,7 +12,7 @@ private const val BASE_URL =
     "https://www.yokochokaraoke.de"
 
 val moshi: Moshi = Moshi.Builder()
-    .add(BookingSlotAdapterFactory())
+    .add(BookingSlotsAdapterFactory())
     .build()
 
 private val retrofit = Retrofit.Builder()

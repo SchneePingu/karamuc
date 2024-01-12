@@ -9,20 +9,20 @@ import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.format.DateTimeParseException
 
-class BookingSlotAdapterFactory : JsonAdapter.Factory {
+class BookingSlotsAdapterFactory : JsonAdapter.Factory {
     override fun create(
         type: Type,
         annotations: Set<Annotation>,
         moshi: Moshi
     ): JsonAdapter<*>? {
         if (type == BookingSlotDto::class.java) {
-            return BookingSlotAdapter()
+            return BookingSlotsAdapter()
         }
         return null
     }
 }
 
-private class BookingSlotAdapter: JsonAdapter<BookingSlotDto>() {
+private class BookingSlotsAdapter: JsonAdapter<BookingSlotDto>() {
 
     override fun fromJson(reader: JsonReader): BookingSlotDto? {
         val jsonValue = reader.readJsonValue()

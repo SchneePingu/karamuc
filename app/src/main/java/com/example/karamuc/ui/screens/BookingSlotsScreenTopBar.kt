@@ -19,7 +19,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun BookingDayTabsTopBar(
+fun BookingSlotsScreenTopBar(
     days: List<LocalDate>,
     selectedTabIndex: Int,
     onTabSelected: (tabIndex: Int) -> Unit,
@@ -37,7 +37,12 @@ fun BookingDayTabsTopBar(
             Tab(
                 selected = selectedTabIndex == tabIndex,
                 onClick = { onTabSelected(tabIndex) },
-                text = { BookingDayTabName(day = day) },
+                text = {
+                    TabName(
+                        day = day,
+                        modifier = modifier
+                    )
+                },
                 modifier = modifier
             )
         }
@@ -45,14 +50,14 @@ fun BookingDayTabsTopBar(
 }
 
 @Composable
-fun BookingDayTabName(
+fun TabName(
     day: LocalDate,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier,
     ) {
         Text(
             text = day.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMANY),
@@ -74,7 +79,7 @@ fun DayTabsTopBarPreview() {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            BookingDayTabsTopBar(
+            BookingSlotsScreenTopBar(
                 listOf(
                     LocalDate.of(1999, 12, 31),
                     LocalDate.of(2000,1, 1)

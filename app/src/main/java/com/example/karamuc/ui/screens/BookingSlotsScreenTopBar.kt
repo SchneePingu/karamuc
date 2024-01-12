@@ -11,7 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.example.karamuc.R
 import com.example.karamuc.ui.theme.KaramucTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -61,10 +64,12 @@ fun TabName(
     ) {
         Text(
             text = day.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMANY),
+            fontSize = integerResource(R.integer.tab_name_weekday_font_size).sp,
             modifier = modifier
         )
         Text(
             text = DateTimeFormatter.ofPattern("dd.MM.").format(day),
+            fontSize = integerResource(R.integer.tab_name_date_font_size).sp,
             modifier = modifier
         )
 

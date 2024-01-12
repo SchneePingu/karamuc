@@ -15,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.karamuc.R
 import com.example.karamuc.ui.theme.KaramucTheme
 import java.time.LocalDate
@@ -83,6 +85,7 @@ fun BookingDatePicker(
         )
         Text(
             text = getDateDisplayValue(stringResource(R.string.date_button)),
+            fontSize = integerResource(R.integer.date_picker_font_size).sp,
             modifier = modifier
         )
     }

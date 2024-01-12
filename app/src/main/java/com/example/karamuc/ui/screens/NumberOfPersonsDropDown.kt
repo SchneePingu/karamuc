@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.karamuc.model.DEFAULT_NUMBER_OF_PERSONS
 import com.example.karamuc.ui.theme.KaramucTheme
 
@@ -65,6 +66,7 @@ fun NumberOfPersonsDropDown(
         )
         Text(
             text = getDisplayValue(),
+            fontSize = 14.sp,
             modifier = modifier
         )
         Icon(

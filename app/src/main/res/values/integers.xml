@@ -1,0 +1,6 @@
+<resources>
+    <integer name="date_picker_font_size">14</integer>
+    <integer name="tab_name_weekday_font_size">20</integer>
+    <integer name="tab_name_date_font_size">20</integer>
+    <integer name="booking_slot_font_size">18</integer>
+</resources>

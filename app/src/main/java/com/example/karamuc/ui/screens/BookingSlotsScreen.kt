@@ -62,13 +62,20 @@ fun BookingSlotsScreen(
                     onError = onError,
                     modifier = modifier
                 )
-                is BookingSlotsUiState.Success -> BookingSlotsList(
-                    bookingSlots = BookingSlotService.filterByNumberOfPersons(
-                        (bookingSlots[pageIndex] as BookingSlotsUiState.Success).slots,
-                        numberOfPersons
-                    ),
-                    modifier = modifier
-                )
+                is BookingSlotsUiState.Success -> {
+                    val slots = BookingSlotService.filterByNumberOfPersons(
+                            (bookingSlots[pageIndex] as BookingSlotsUiState.Success).slots,
+                            numberOfPersons
+                    )
+                    if (slots.isEmpty()) {
+                        BookedOutScreen()
+                    } else {
+                        BookingSlotsList(
+                            bookingSlots = slots,
+                            modifier = modifier
+                        )
+                    }
+                }
             }
         }
     }

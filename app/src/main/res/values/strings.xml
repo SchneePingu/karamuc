@@ -4,6 +4,7 @@
     <string name="info_choose_date">Buchungsdatum wählen.</string>
     <string name="info_choose_number_of_persons">Personenzahl wählen.</string>
     <string name="info_easter_egg">Aufs Singen freuen. ^^</string>
+    <string name="info_booked_out">Ausgebucht.</string>
     <string name="loading">Die verfügbaren Buchungen\nwerden abgerufen.</string>
     <string name="loading_easter_egg">Abwarten und Spezi trinken.</string>
     <string name="error">Die verfügbaren Buchungen konnten\nnicht abgerufen werden.</string>

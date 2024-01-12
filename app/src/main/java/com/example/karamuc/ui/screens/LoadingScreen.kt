@@ -34,7 +34,7 @@ fun LoadingScreen(
             modifier = modifier
         ) {
             CircularProgressIndicator(
-                modifier = modifier.size(180.dp),
+                modifier = modifier.size(150.dp),
                 strokeWidth = 5.dp,
             )
             Spacer(modifier = modifier.size(30.dp))

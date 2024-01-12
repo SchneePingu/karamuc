@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.karamuc.model.BookingSlotsViewModel
 import com.example.karamuc.model.AppTopBarViewModel
+import com.example.karamuc.model.BookingSlotsViewModel
 import com.example.karamuc.ui.theme.KaramucTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,6 +54,8 @@ fun App() {
                     onError = bookingSlotsViewModel::updateBookingSlots,
                     modifier = modifier
                 )
+            } else {
+                InfoScreen()
             }
         }
     }

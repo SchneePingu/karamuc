@@ -68,8 +68,8 @@ fun BookingSlotsViewPreview() {
                         100,
                         "Cat Café",
                         isAvailable = true,
-                        persons = 2,
-                        roomSize = 2
+                        roomSize = 2,
+                        maxRoomSize = 2
                     ),
                     BookingSlot(
                         LocalTime.of(18,30,0),
@@ -77,8 +77,8 @@ fun BookingSlotsViewPreview() {
                         100,
                         "Godzilla",
                         isAvailable = true,
-                        persons = 2,
-                        roomSize = 2
+                        roomSize = 2,
+                        maxRoomSize = 2
                     )
                 )
             )

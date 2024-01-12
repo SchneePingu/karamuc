@@ -72,8 +72,8 @@ fun BookingSlotCardViewPreview() {
                     price = 100,
                     roomName = "Cat Café",
                     isAvailable = true,
-                    persons = 2,
                     roomSize = 2,
+                    maxRoomSize = 2,
                 )
             )
         }

@@ -5,9 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.karamuc.mapper.BookingSlotsMapper
 import com.example.karamuc.network.BookingSlotApi
-import com.example.karamuc.service.BookingDaysService
+import com.example.karamuc.service.BookingSlotService
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -15,9 +14,16 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 val BOOKING_WEEK_INDICES = listOf<Long>(3, 4, 5, 6, 7)
+const val BOOKING_DATE_FORMAT = "yyyy-MM-dd"
+const val DEFAULT_TAB_INDEX = 0
+const val WEDNESDAY_TAB_INDEX = 0
+const val THURSDAY_TAB_INDEX = 1
+const val FRIDAY_TAB_INDEX = 2
+const val SATURDAY_TAB_INDEX = 3
+const val SUNDAY_TAB_INDEX = 4
 
 class BookingSlotsViewModel : ViewModel() {
-    var tabIndex: Int by mutableStateOf(0)
+    var tabIndex: Int by mutableStateOf(DEFAULT_TAB_INDEX)
 
     var bookingDays: List<LocalDate> by mutableStateOf(listOf())
 
@@ -55,11 +61,11 @@ class BookingSlotsViewModel : ViewModel() {
         bookingDays.forEachIndexed { index, day ->
             fetchBookingSlots(day) {
                 when (index) {
-                    0 -> wednesdayBookingSlots = it
-                    1 -> thursdayBookingSlots = it
-                    2 -> fridayBookingSlots = it
-                    3 -> saturdayBookingSlots = it
-                    4 -> sundayBookingSlots = it
+                    WEDNESDAY_TAB_INDEX -> wednesdayBookingSlots = it
+                    THURSDAY_TAB_INDEX -> thursdayBookingSlots = it
+                    FRIDAY_TAB_INDEX -> fridayBookingSlots = it
+                    SATURDAY_TAB_INDEX -> saturdayBookingSlots = it
+                    SUNDAY_TAB_INDEX -> sundayBookingSlots = it
                 }
             }
         }
@@ -83,13 +89,7 @@ class BookingSlotsViewModel : ViewModel() {
                     BookingSlotsUiState.Error
                 }
 
-                BookingSlotsUiState.Success(
-                    BookingDaysService.sort(
-                        BookingDaysService.filterAvailable(
-                            BookingSlotsMapper.map(bookingResult)
-                        )
-                    )
-                )
+                BookingSlotsUiState.Success(BookingSlotService.getBookingSlots(bookingResult))
             } catch (e: IOException) {
                 BookingSlotsUiState.Error
             } catch (e: HttpException) {
@@ -101,7 +101,7 @@ class BookingSlotsViewModel : ViewModel() {
     }
 
     private fun formatBookingDate(bookingDate: LocalDate): String {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(bookingDate)
+        return DateTimeFormatter.ofPattern(BOOKING_DATE_FORMAT).format(bookingDate)
     }
 
     private fun getBookingDays(bookingDate: LocalDate?): List<LocalDate> {
@@ -118,12 +118,12 @@ class BookingSlotsViewModel : ViewModel() {
 
     private fun getTabIndex(bookingDay: LocalDate?): Int {
         if (bookingDay == null) {
-            return 0
+            return DEFAULT_TAB_INDEX
         }
 
         val tabIndex = BOOKING_WEEK_INDICES.find {
             bookingDay.dayOfWeek.value == it.toInt()
-        } ?: return 0
+        } ?: return DEFAULT_TAB_INDEX
 
         return tabIndex.toInt()
     }

@@ -8,8 +8,8 @@ data class BookingSlot(
     val toTime: LocalTime?,
     val price: Int?,
     val roomName: String?,
-    val persons: Int?,
     val roomSize: Int?,
+    val maxRoomSize: Int?,
     val isAvailable: Boolean
 )
 

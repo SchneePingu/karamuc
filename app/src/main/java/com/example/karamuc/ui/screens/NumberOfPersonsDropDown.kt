@@ -22,9 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.karamuc.model.DEFAULT_NUMBER_OF_PERSONS
 import com.example.karamuc.ui.theme.KaramucTheme
 
-const val DEFAULT_NUMBER_OF_PERSONS = 2
 val NUMBER_OF_PERSONS_OPTIONS: List<Int> = listOf(DEFAULT_NUMBER_OF_PERSONS, 3, 4, 5, 6, 7, 10, 11, 12)
 
 @Composable

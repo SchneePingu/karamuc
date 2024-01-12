@@ -8,8 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private const val BASE_URL =
-    "https://www.yokochokaraoke.de"
+private const val BASE_URL = "https://www.yokochokaraoke.de"
 
 val moshi: Moshi = Moshi.Builder()
     .add(BookingSlotsAdapterFactory())

@@ -10,8 +10,8 @@ class BookingSlotsMapper {
             return source.flatMap { (roomId, list) ->
                 val room = getRoomById(roomId)
                 val roomName = room?.displayName
-                val persons = room?.persons
-                val size = room?.size
+                val persons = room?.size
+                val size = room?.maxSize
 
                 list.map { dto ->
                     val fromTime = dto.date?.toLocalTime()
@@ -24,8 +24,8 @@ class BookingSlotsMapper {
                         roomName = roomName,
                         price = dto.price,
                         isAvailable = dto.isAvailable,
-                        persons = persons,
-                        roomSize = size
+                        roomSize = persons,
+                        maxRoomSize = size
                     )
                 }
             }

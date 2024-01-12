@@ -14,7 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.karamuc.model.BookingSlotsUiState
-import com.example.karamuc.service.BookingDaysService
+import com.example.karamuc.service.BookingSlotService
 import com.example.karamuc.ui.theme.KaramucTheme
 import java.time.LocalDate
 
@@ -63,7 +63,7 @@ fun BookingSlotsScreen(
                     modifier = modifier
                 )
                 is BookingSlotsUiState.Success -> BookingSlotsList(
-                    bookingSlots = BookingDaysService.filterSize(
+                    bookingSlots = BookingSlotService.filterByNumberOfPersons(
                         (bookingSlots[pageIndex] as BookingSlotsUiState.Success).slots,
                         numberOfPersons
                     ),

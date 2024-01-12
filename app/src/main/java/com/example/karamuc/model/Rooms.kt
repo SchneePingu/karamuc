@@ -3,8 +3,8 @@ package com.example.karamuc.model
 enum class Rooms(
     val id: String,
     val displayName: String,
-    val persons: Int,
-    val size: Int
+    val size: Int,
+    val maxSize: Int
 ) {
     FUGU("892","Fugu", 2, 3),
     HANAMI("967","Hanami", 3, 4),

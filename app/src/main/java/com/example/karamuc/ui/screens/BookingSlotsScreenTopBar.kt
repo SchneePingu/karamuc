@@ -31,6 +31,7 @@ fun BookingSlotsScreenTopBar(
 
     TabRow(
         selectedTabIndex = selectedTabIndex,
+        contentColor = MaterialTheme.colorScheme.tertiary,
         modifier = modifier
     ) {
         days.forEachIndexed { tabIndex, day ->

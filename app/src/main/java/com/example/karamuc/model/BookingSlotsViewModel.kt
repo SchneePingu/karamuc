@@ -13,7 +13,7 @@ import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-val BOOKING_WEEK_INDICES = listOf<Long>(3, 4, 5, 6, 7)
+val BOOKING_WEEK_INDICES = listOf(3, 4, 5, 6, 7)
 const val BOOKING_DATE_FORMAT = "yyyy-MM-dd"
 const val DEFAULT_TAB_INDEX = 0
 const val WEDNESDAY_TAB_INDEX = 0
@@ -112,7 +112,7 @@ class BookingSlotsViewModel : ViewModel() {
         val bookingDayIndex = bookingDate.dayOfWeek.value
 
         return BOOKING_WEEK_INDICES.map {
-            bookingDate.plusDays(it - bookingDayIndex)
+            bookingDate.plusDays(it - bookingDayIndex.toLong())
         }
     }
 
@@ -121,10 +121,11 @@ class BookingSlotsViewModel : ViewModel() {
             return DEFAULT_TAB_INDEX
         }
 
-        val tabIndex = BOOKING_WEEK_INDICES.find {
-            bookingDay.dayOfWeek.value == it.toInt()
-        } ?: return DEFAULT_TAB_INDEX
+        val tabIndex = BOOKING_WEEK_INDICES.indexOf(bookingDay.dayOfWeek.value)
+        if (tabIndex < 0) {
+            return DEFAULT_TAB_INDEX
+        }
 
-        return tabIndex.toInt()
+        return tabIndex
     }
 }

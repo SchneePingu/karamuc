@@ -34,19 +34,21 @@ fun LoadingScreen(
             modifier = modifier
         ) {
             CircularProgressIndicator(
-                modifier = modifier.size(150.dp),
+                modifier = modifier.size(120.dp),
                 strokeWidth = 5.dp,
             )
             Spacer(modifier = modifier.size(30.dp))
             Text(
                 text = stringResource(R.string.loading_easter_egg),
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.fillMaxWidth()
             )
             Spacer(modifier = modifier.size(10.dp))
             Text(
                 text = stringResource(R.string.loading),
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.fillMaxWidth()
             )
         }

@@ -42,18 +42,21 @@ fun ErrorScreen(
             Icon(
                 imageVector = Icons.Filled.Warning,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier
             )
             Spacer(modifier = modifier.size(10.dp))
             Text(
                 text = stringResource(R.string.error_easter_egg),
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.fillMaxWidth()
             )
             Spacer(modifier = modifier.size(10.dp))
             Text(
                 text = stringResource(R.string.error),
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.fillMaxWidth()
             )
             Spacer(modifier = modifier.size(20.dp))

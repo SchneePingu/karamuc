@@ -17,23 +17,27 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primaryContainer = Color(0xFF99ccff),
-    primary = Color(0xFF7eb0f6),
-    onPrimary = Color.Black,
-    secondary =  Color(0xFFc1e0ff),
-    onSecondary = Color.Black,
-    tertiary = Color.White,
+    primaryContainer = Color(0xFF444444),
+    primary = Color(0xFF2196f3),
+    onPrimary = Color.White,
+    secondary = Color(0xFFff9800),
+    onSecondary = Color.White,
+    tertiary = Color(0xFF333333),
+    onTertiary = Color.White,
     background = Color(0xFF333333),
+    onBackground = Color(0xFFe5e6eb)
 )
 
 private val LightColorScheme = lightColorScheme(
-    primaryContainer = Color(0xFF0a418e),
-    primary = Color(0xFF287cf0),
+    primaryContainer = Color(0xFF444444),
+    primary = Color(0xFF2196f3),
     onPrimary = Color.White,
-    secondary = Color(0xFF062755),
+    secondary = Color(0xFFff9800),
     onSecondary = Color.White,
-    tertiary = Color.Black,
-    background = Color(0xFFfefefe)
+    tertiary = Color(0xFF333333),
+    onTertiary = Color(0xFFe5e6eb),
+    background = Color(0xFF333333),
+    onBackground = Color(0xFFe5e6eb)
 )
 
 @Composable
@@ -56,7 +60,7 @@ fun KaramucTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

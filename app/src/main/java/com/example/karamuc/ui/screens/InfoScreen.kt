@@ -39,6 +39,8 @@ fun InfoScreen(
         Icon(
             imageVector = Icons.Filled.Info,
             contentDescription = null,
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = modifier
         )
         Spacer(
             modifier = modifier.size(20.dp)
@@ -49,16 +51,19 @@ fun InfoScreen(
             Text(
                 text = "1.",
                 textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.2f)
             )
             Icon(
                 imageVector = Icons.Filled.DateRange,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.1f)
             )
             Text(
                 text = stringResource(R.string.info_choose_date),
                 textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.6f)
             )
         }
@@ -71,16 +76,19 @@ fun InfoScreen(
             Text(
                 text = "2.",
                 textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.2f)
             )
             Icon(
                 imageVector = Icons.Filled.Person,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.1f)
             )
             Text(
                 text = stringResource(R.string.info_choose_number_of_persons),
                 textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.6f)
             )
         }
@@ -93,16 +101,19 @@ fun InfoScreen(
             Text(
                 text = "3.",
                 textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.2f)
             )
             Icon(
                 imageVector = Icons.Filled.FavoriteBorder,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.1f)
             )
             Text(
                 text = stringResource(R.string.info_easter_egg),
                 textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier.weight(0.6f)
             )
         }

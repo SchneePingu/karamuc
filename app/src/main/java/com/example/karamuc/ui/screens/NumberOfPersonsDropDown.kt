@@ -49,10 +49,10 @@ fun NumberOfPersonsDropDown(
         onClick = { expanded = true },
         enabled = isEnabled,
         colors = ButtonDefaults.buttonColors(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.onPrimary,
             MaterialTheme.colorScheme.secondary,
-            MaterialTheme.colorScheme.onSecondary
+            MaterialTheme.colorScheme.onSecondary,
+            MaterialTheme.colorScheme.tertiary,
+            MaterialTheme.colorScheme.onTertiary
         )
     ) {
         Icon(

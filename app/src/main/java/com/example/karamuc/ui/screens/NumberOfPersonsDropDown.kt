@@ -1,7 +1,9 @@
 package com.example.karamuc.ui.screens
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -20,7 +22,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.karamuc.model.DEFAULT_NUMBER_OF_PERSONS
 import com.example.karamuc.ui.theme.KaramucTheme
@@ -75,15 +79,18 @@ fun NumberOfPersonsDropDown(
     }
     DropdownMenu(
         expanded = expanded,
+        offset = DpOffset(0.dp, 20.dp),
         onDismissRequest = { expanded = false },
-        modifier = modifier
+        modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
     ) {
         NUMBER_OF_PERSONS_OPTIONS.forEach { numberOfPersons ->
             DropdownMenuItem(
                 text = {
                     Text(
                         text = numberOfPersons.toString(),
-                        modifier = modifier
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        textAlign =TextAlign.Center,
+                        modifier = modifier.fillMaxWidth()
                     )
                },
                 onClick = {

@@ -13,15 +13,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.karamuc.model.AppTopBarViewModel
 import com.example.karamuc.model.BookingSlotsViewModel
+import com.example.karamuc.model.BookingSlotsViewModelInterface
+import com.example.karamuc.model.MockBookingSlotsViewModel
 import com.example.karamuc.ui.theme.KaramucTheme
+import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App() {
     val appTopBarViewModel: AppTopBarViewModel = viewModel()
     val bookingSlotsViewModel: BookingSlotsViewModel = viewModel()
     val modifier = Modifier
 
+    AppScreen(
+        appTopBarViewModel = appTopBarViewModel,
+        bookingSlotsViewModel = bookingSlotsViewModel,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppScreen(
+    appTopBarViewModel: AppTopBarViewModel,
+    bookingSlotsViewModel: BookingSlotsViewModelInterface,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             AppTopBar(
@@ -65,12 +81,20 @@ fun App() {
 @Preview(name = "LightTheme", showBackground = true)
 @Preview(name = "DarkTheme", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun AppPreview() {
+fun AppScreenPreview() {
     KaramucTheme {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            App()
+            val appTopBarViewModel = AppTopBarViewModel()
+            appTopBarViewModel.date = LocalDate.of(1999, 12, 31)
+
+            val mockBookingSlotsViewModel = MockBookingSlotsViewModel()
+
+            AppScreen(
+                appTopBarViewModel = appTopBarViewModel,
+                bookingSlotsViewModel = mockBookingSlotsViewModel
+            )
         }
     }
 }

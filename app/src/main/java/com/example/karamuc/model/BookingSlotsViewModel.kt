@@ -22,10 +22,10 @@ const val FRIDAY_TAB_INDEX = 2
 const val SATURDAY_TAB_INDEX = 3
 const val SUNDAY_TAB_INDEX = 4
 
-class BookingSlotsViewModel : ViewModel() {
-    var tabIndex: Int by mutableStateOf(DEFAULT_TAB_INDEX)
+class BookingSlotsViewModel : ViewModel(), BookingSlotsViewModelInterface  {
+    override var tabIndex: Int by mutableStateOf(DEFAULT_TAB_INDEX)
 
-    var bookingDays: List<LocalDate> by mutableStateOf(listOf())
+    override var bookingDays: List<LocalDate> by mutableStateOf(listOf())
 
     private var wednesdayBookingSlots: BookingSlotsUiState by mutableStateOf(BookingSlotsUiState.Loading)
     private var thursdayBookingSlots: BookingSlotsUiState by mutableStateOf(BookingSlotsUiState.Loading)
@@ -35,7 +35,7 @@ class BookingSlotsViewModel : ViewModel() {
 
     private val roomIds = getRoomIds()
 
-    fun getBookingSlots(): List<BookingSlotsUiState> {
+    override fun getBookingSlots(): List<BookingSlotsUiState> {
         return listOf(
             wednesdayBookingSlots,
             thursdayBookingSlots,
@@ -45,23 +45,23 @@ class BookingSlotsViewModel : ViewModel() {
         )
     }
 
-    fun isLoading(): Boolean {
+    override fun isLoading(): Boolean {
         return getBookingSlots().any{ it is BookingSlotsUiState.Loading }
     }
 
-    fun updateTabIndex(bookingDate: LocalDate?) {
+    override fun updateTabIndex(bookingDate: LocalDate?) {
         tabIndex = getTabIndex(bookingDate)
     }
 
-    fun updateTabIndex(newTabIndex: Int) {
+    override fun updateTabIndex(newTabIndex: Int) {
         tabIndex = newTabIndex
     }
 
-    fun updateBookingDays(bookingDate: LocalDate?) {
+    override fun updateBookingDays(bookingDate: LocalDate?) {
         bookingDays = getBookingDays(bookingDate)
     }
 
-    fun updateBookingSlots() {
+    override fun updateBookingSlots() {
         bookingDays.forEachIndexed { index, day ->
             fetchBookingSlots(day) {
                 when (index) {

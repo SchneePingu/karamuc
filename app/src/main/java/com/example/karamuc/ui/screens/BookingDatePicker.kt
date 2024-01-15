@@ -52,7 +52,6 @@ fun BookingDatePicker(
         onClick = {
             val dialog = DatePickerDialog(
                 context,
-//                R.style.KaramucDatePicker,
                 { _, year, month, day ->
                     onDateChange(LocalDate.of(year, month + 1, day))
                 },

@@ -18,18 +18,7 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primaryContainer = Color(0xFF444444),
-    primary = Color(0xFF2196f3),
-    onPrimary = Color.White,
-    secondary = Color(0xFFff9800),
-    onSecondary = Color.White,
-    tertiary = Color(0xFF333333),
-    onTertiary = Color.White,
-    background = Color(0xFF333333),
-    onBackground = Color(0xFFe5e6eb)
-)
-
-private val LightColorScheme = lightColorScheme(
-    primaryContainer = Color(0xFF444444),
+    onPrimaryContainer = Color(0xFFa1a1a1),
     primary = Color(0xFF2196f3),
     onPrimary = Color.White,
     secondary = Color(0xFFff9800),
@@ -38,6 +27,19 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = Color(0xFFe5e6eb),
     background = Color(0xFF333333),
     onBackground = Color(0xFFe5e6eb)
+)
+
+private val LightColorScheme = lightColorScheme(
+    primaryContainer = Color(0xFF444444),
+    onPrimaryContainer = Color(0xFF222222),
+    primary = Color(0xFF2196f3),
+    onPrimary = Color.White,
+    secondary = Color(0xFFff9800),
+    onSecondary = Color.White,
+    tertiary = Color(0xFF333333),
+    onTertiary = Color(0xFFe5e6eb),
+    background = Color(0xFF333333),
+    onBackground = Color(0xFFe5e6eb),
 )
 
 @Composable
@@ -60,7 +62,7 @@ fun KaramucTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.toArgb()
+            window.statusBarColor = colorScheme.onPrimaryContainer.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

@@ -34,6 +34,7 @@ fun App() {
                 },
                 numberOfPersons = appTopBarViewModel.numberOfPersons,
                 onNumberOfPersonsChange = appTopBarViewModel:: updateNumberOfPersons,
+                isLoading = bookingSlotsViewModel.isLoading(),
                 modifier = modifier
             )
         }

@@ -18,6 +18,7 @@ fun AppTopBar(
     onDateChange: (date: LocalDate) -> Unit,
     numberOfPersons: Int?,
     onNumberOfPersonsChange: (numberOfPersons: Int) -> Unit,
+    isLoading:Boolean,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
@@ -38,6 +39,7 @@ fun AppTopBar(
                 BookingDatePicker(
                     date = date,
                     onDateChange = onDateChange,
+                    isEnabled = date == null || !isLoading,
                     modifier = modifier
                 )
         },
@@ -50,6 +52,6 @@ fun AppTopBar(
 @Composable
 fun AppTopBarPreview() {
     KaramucTheme {
-        AppTopBar(null, {}, null, {} )
+        AppTopBar(null, {}, null, {}, true )
     }
 }

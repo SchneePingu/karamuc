@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter
 fun BookingDatePicker(
     date: LocalDate?,
     onDateChange: (date: LocalDate) -> Unit,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -71,6 +72,7 @@ fun BookingDatePicker(
             MaterialTheme.colorScheme.tertiary,
             MaterialTheme.colorScheme.onTertiary
         ),
+        enabled = isEnabled,
         modifier = modifier
     ) {
         Icon(
@@ -98,7 +100,8 @@ fun BookingDatePickerPreview() {
         ) {
             BookingDatePicker(
                 date = null,
-                onDateChange = {}
+                onDateChange = {},
+                isEnabled = true
             )
         }
     }

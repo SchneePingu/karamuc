@@ -45,6 +45,10 @@ class BookingSlotsViewModel : ViewModel() {
         )
     }
 
+    fun isLoading(): Boolean {
+        return getBookingSlots().any{ it is BookingSlotsUiState.Loading }
+    }
+
     fun updateTabIndex(bookingDate: LocalDate?) {
         tabIndex = getTabIndex(bookingDate)
     }
